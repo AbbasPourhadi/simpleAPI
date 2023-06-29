@@ -11,20 +11,59 @@ use Symfony\Component\HttpFoundation\Response;
 class CategoryController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *      path="/categories",
+     *      tags={"Categories"},
+     *      summary="Get list of categories",
+     *      description="Returns list of categories",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *     )
      */
     public function index()
     {
         $categories = Category::all();
         return CategoryResource::collection($categories);
-
     }
 
 
     /**
-     * Store a newly created resource in storage.
-     * @param StoreCategoryRequest $request
-     * @return CategoryResource
+     * @OA\Post(
+     *      path="/categories",
+     *      tags={"Categories"},
+     *      summary="Store new category",
+     *      description="Returns category data",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent()
+     *      ),
+     *      @OA\Response(
+     *          response=201,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad Request"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     * )
      */
     public function store(StoreCategoryRequest $request)
     {
@@ -33,7 +72,37 @@ class CategoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *      path="/categories/{id}",
+     *      tags={"Categories"},
+     *      summary="Get category information",
+     *      description="Returns category data",
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="category id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad Request"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     * )
      */
     public function show(string $id)
     {
@@ -43,9 +112,42 @@ class CategoryController extends Controller
 
 
     /**
-     * Update the specified resource in storage.
-     * @param StoreCategoryRequest $request
-     * @param string $id
+     * @OA\Put(
+     *      path="/categories/{id}",
+     *      tags={"Categories"},
+     *      summary="Update existing category",
+     *      description="Returns updated category data",
+     *      @OA\Parameter(
+     *          name="name",
+     *          description="category name",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=202,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="")
+     *       ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad Request"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Resource Not Found"
+     *      )
+     * )
      */
     public function update(StoreCategoryRequest $request, string $id)
     {
@@ -54,8 +156,40 @@ class CategoryController extends Controller
         return new CategoryResource($category);
     }
 
+
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *      path="/categories/{id}",
+     *      tags={"Categories"},
+     *      summary="Delete existing category",
+     *      description="Deletes a record and returns no content",
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="category id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=204,
+     *          description="Successful operation",
+     *          @OA\JsonContent()
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Resource Not Found"
+     *      )
+     * )
      */
     public function destroy(string $id)
     {
